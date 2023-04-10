@@ -57,15 +57,16 @@ IWebElement priceText = driver.FindElement(By.Id("Price"));
 priceText.SendKeys("100");
 
 IWebElement saveButtion = driver.FindElement(By.Id("SaveButton"));
-saveButtion.Click();    
+saveButtion.Click();
 
 Thread.Sleep(2000);
 
 IWebElement goToLastPage = driver.FindElement(By.XPath("//*[@id=\"tmsGrid\"]/div[4]/a[4]/span"));
 goToLastPage.Click();
+Thread.Sleep(2000);
 
 IWebElement latestCreated = driver.FindElement(By.XPath("//*[@id=\"tmsGrid\"]/div[3]/table/tbody/tr[last()]/td[1]"));
-                                                 
+
 if (latestCreated.Text == "TimeTest")
 {
     Console.WriteLine("Created Successfully");
@@ -100,18 +101,19 @@ IWebElement editSaveButton = driver.FindElement(By.Id("SaveButton"));
 editSaveButton.Click();
 Thread.Sleep(2000);
 
-IWebElement goToLastPageAgain = driver.FindElement(By.XPath("//*[@id=\"tmsGrid\"]/div[4]/a[4]/span"));                                                    
+IWebElement goToLastPageAgain = driver.FindElement(By.XPath("//*[@id=\"tmsGrid\"]/div[4]/a[4]/span"));
 goToLastPageAgain.Click();
-Thread.Sleep(1000);
+Thread.Sleep(2000);
 
 IWebElement editedRecord = driver.FindElement(By.XPath("//*[@id=\"tmsGrid\"]/div[3]/table/tbody/tr[last()]/td[1]"));
+
 if (editedRecord.Text == "MaterialTestEdited")
 {
-    Console.WriteLine("Edited Successfully"); 
+    Console.WriteLine("Edited Successfully");
 }
 else
 {
-    Console.WriteLine("Could not edit"); 
+    Console.WriteLine("Could not edit");
 }
 
 //Delete newly created record
@@ -120,6 +122,18 @@ IWebElement deleteButton = driver.FindElement(By.XPath("//*[@id=\"tmsGrid\"]/div
 deleteButton.Click();
 
 driver.SwitchTo().Alert().Accept();
+Thread.Sleep(5000);
+
+IWebElement deletedRecord = driver.FindElement(By.XPath("//*[@id=\"tmsGrid\"]/div[3]/table/tbody/tr[last()]/td[1]"));
+if (deletedRecord.Text == "MaterialTestEdited")
+{
+    Console.WriteLine("Could not delete");
+}
+else
+{
+    Console.WriteLine("Deleted successfully");
+}
+
 
 
 
