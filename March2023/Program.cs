@@ -7,6 +7,9 @@ IWebDriver driver = new ChromeDriver();
 driver.Navigate().GoToUrl("http://horse.industryconnect.io/Account/Login?ReturnUrl=%2fTimeMaterial");
 driver.Manage().Window.Maximize();
 
+//added implicit wait because sometimes xode is failing due to system's slowness. Not sure if its correct implementation
+driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(3);
+
 //Initialised webelement UserNameTextBox, found it using ID, and entered value hari
 IWebElement userNameTextBbox = driver.FindElement(By.Id("UserName"));
 userNameTextBbox.SendKeys("hari");
@@ -30,6 +33,14 @@ else
 {
     Console.WriteLine("Login failed");
 }
+
+//navigate to time and material page
+IWebElement adminMenu = driver.FindElement(By.XPath("/html/body/div[3]/div/div/ul/li[5]/a"));
+adminMenu.Click();
+
+IWebElement tmOption = driver.FindElement(By.XPath("/html/body/div[3]/div/div/ul/li[5]/ul/li[3]/a"));
+tmOption.Click();
+Thread.Sleep(3000);
 
 //Create new Time entry  
 
@@ -71,7 +82,7 @@ Thread.Sleep(2000);
 //go to last page because newly added entry goes to last page last row
 IWebElement goToLastPage = driver.FindElement(By.XPath("//*[@id=\"tmsGrid\"]/div[4]/a[4]/span"));
 goToLastPage.Click();
-Thread.Sleep(2000);
+Thread.Sleep(5000);
 
 //changed tr[4] part in xpath to tr[last()] so that it always finds last entry
 IWebElement latestCreated = driver.FindElement(By.XPath("//*[@id=\"tmsGrid\"]/div[3]/table/tbody/tr[last()]/td[1]"));
@@ -114,8 +125,9 @@ Thread.Sleep(2000);
 
 IWebElement goToLastPageAgain = driver.FindElement(By.XPath("//*[@id=\"tmsGrid\"]/div[4]/a[4]/span"));
 goToLastPageAgain.Click();
-Thread.Sleep(2000);
+Thread.Sleep(5000);
 
+//testing that edited record exists on the last row
 IWebElement editedRecord = driver.FindElement(By.XPath("//*[@id=\"tmsGrid\"]/div[3]/table/tbody/tr[last()]/td[1]"));
 
 if (editedRecord.Text == "MaterialTestEdited")
