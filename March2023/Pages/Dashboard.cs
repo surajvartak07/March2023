@@ -1,15 +1,16 @@
-﻿using OpenQA.Selenium;
+﻿using March2023.Utilities;
+using OpenQA.Selenium;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace March2023.Dashboard
+namespace March2023.Pages
 {
-    public class GoToTMPage
+    public class Dashboard : CommonDriver
     {
-        public void goToTMPage(IWebDriver driver)
+        public void goToTMPage()
         {
             //navigate to time and material page
             IWebElement adminMenu = driver.FindElement(By.XPath("/html/body/div[3]/div/div/ul/li[5]/a"));

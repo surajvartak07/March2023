@@ -1,23 +1,30 @@
-﻿using OpenQA.Selenium;
+﻿using March2023.Utilities;
+using NUnit.Framework;
+using OpenQA.Selenium;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace March2023.Login
+namespace March2023.Pages
 {
-    public class Login
+    public class Login : CommonDriver
     {
-        public void login(IWebDriver driver)
+        public void login()
         {
             driver.Navigate().GoToUrl("http://horse.industryconnect.io/Account/Login?ReturnUrl=%2fTimeMaterial");
             driver.Manage().Window.Maximize();
-
-            //Initialised webelement UserNameTextBox, found it using ID, and entered value hari
-            IWebElement userNameTextBbox = driver.FindElement(By.Id("UserName"));
-            userNameTextBbox.SendKeys("hari");
-
+            try
+            {
+                //Initialised webelement UserNameTextBox, found it using ID, and entered value hari
+                IWebElement userNameTextBox = driver.FindElement(By.Id("UserName"));
+                userNameTextBox.SendKeys("hari");
+            }
+            catch (Exception e)
+            {
+                Assert.Fail("login page hasn't loaded yet");
+            }
             //Initialised webelement PasswordTextbox, found it using ID, and entered value 123123
             IWebElement passwordTextbox = driver.FindElement(By.Id("Password"));
             passwordTextbox.SendKeys("123123");

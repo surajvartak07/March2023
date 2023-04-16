@@ -1,15 +1,17 @@
-﻿using OpenQA.Selenium;
+﻿using March2023.Utilities;
+using NUnit.Framework;
+using OpenQA.Selenium;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace March2023.CreateEditDelete
+namespace March2023.Pages
 {
-    public class CreateEditDelete
+    public class TMPage : CommonDriver
     {
-        public void Create(IWebDriver driver)
+        public void Create()
         {
             //Create new Time entry  
 
@@ -57,20 +59,27 @@ namespace March2023.CreateEditDelete
             IWebElement latestCreated = driver.FindElement(By.XPath("//*[@id=\"tmsGrid\"]/div[3]/table/tbody/tr[last()]/td[1]"));
 
             //checking if newly created entry exists
-            if (latestCreated.Text == "TimeTest")
-            {
-                Console.WriteLine("Created Successfully");
-            }
-            else
-            {
-                Console.WriteLine($"Could not create");
-            }
+
+            Assert.That(latestCreated.Text == "TimeTest","Actual code and expected code do not match");
+            //if (latestCreated.Text == "TimeTest")
+            //{
+            //    Console.WriteLine("Created Successfully");
+            //}
+            //else
+            //{
+            //    Console.WriteLine($"Could not create");
+            //}
 
 
         }
 
-        public void Edit(IWebDriver driver)
+        public void Edit()
         {
+            //Go to last page because our record is on last page, in createnew we went to last page but this test is seperate so again we have to go to last page
+            IWebElement goToLastPage = driver.FindElement(By.XPath("//*[@id=\"tmsGrid\"]/div[4]/a[4]/span"));
+            goToLastPage.Click();
+            Thread.Sleep(5000);
+
             // Edit newly created time entry
 
             IWebElement editButton = driver.FindElement(By.XPath("//*[@id=\"tmsGrid\"]/div[3]/table/tbody/tr[last()]/td[5]/a[1]"));
@@ -103,20 +112,26 @@ namespace March2023.CreateEditDelete
             //testing that edited record exists on the last row
             IWebElement editedRecord = driver.FindElement(By.XPath("//*[@id=\"tmsGrid\"]/div[3]/table/tbody/tr[last()]/td[1]"));
 
-            if (editedRecord.Text == "MaterialTestEdited")
-            {
-                Console.WriteLine("Edited Successfully");
-            }
-            else
-            {
-                Console.WriteLine("Could not edit");
-            }
+            Assert.That(editedRecord.Text == "MaterialTestEdited", "Could not edit");
+            //if (editedRecord.Text == "MaterialTestEdited")
+            //{
+            //    Console.WriteLine("Edited Successfully");
+            //}
+            //else
+            //{
+            //    Console.WriteLine("Could not edit");
+            //}
         }
 
-        public void Delete(IWebDriver driver)
+        public void Delete()
         {
+            Thread.Sleep(5000);
+            //Go to last page because our record is on last page, in createnew we went to last page but this test is seperate so again we have to go to last page
+            IWebElement goToLastPage = driver.FindElement(By.XPath("//*[@id=\"tmsGrid\"]/div[4]/a[4]/span"));
+            goToLastPage.Click();
+            Thread.Sleep(5000);
+
             //Delete newly created record
-            Thread.Sleep(2000);
 
             IWebElement deleteButton = driver.FindElement(By.XPath("//*[@id=\"tmsGrid\"]/div[3]/table/tbody/tr[last()]/td[5]/a[2]"));
             deleteButton.Click();
@@ -127,14 +142,15 @@ namespace March2023.CreateEditDelete
 
             //last record should not be 'MaterialTestEdited' because we deleted that record 
             IWebElement lastRecord = driver.FindElement(By.XPath("//*[@id=\"tmsGrid\"]/div[3]/table/tbody/tr[last()]/td[1]"));
-            if (lastRecord.Text != "MaterialTestEdited")
-            {
-                Console.WriteLine("Deleted successfully");
-            }
-            else
-            {
-                Console.WriteLine("Could not delete");
-            }
+            Assert.That(lastRecord.Text != "MaterialTestEdited", "Could not delete");
+            //if (lastRecord.Text != "MaterialTestEdited")
+            //{
+            //    Console.WriteLine("Deleted successfully");
+            //}
+            //else
+            //{
+            //    Console.WriteLine("Could not delete");
+            //}
         }
     }
 }

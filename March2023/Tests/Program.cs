@@ -1,37 +1,58 @@
 ﻿
-using March2023.CreateEditDelete;
-using March2023.Dashboard;
-using March2023.Login;
-using OpenQA.Selenium;
+using March2023.Pages;
 using OpenQA.Selenium.Chrome;
+using OpenQA.Selenium;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using NUnit.Framework;
+using March2023.Utilities;
 
-//Initialised browser element called driver, navigated to URL, maximised window
-IWebDriver driver = new ChromeDriver();
-
-Login loginObj = new Login();
-loginObj.login(driver); 
-
-GoToTMPage goToTMPageObj = new GoToTMPage();
-goToTMPageObj.goToTMPage(driver);
-
-CreateEditDelete createEditDeleteObj = new CreateEditDelete();
-createEditDeleteObj.Create(driver);
-createEditDeleteObj.Edit(driver);   
-createEditDeleteObj.Delete(driver);
-
-
-
-
-
-
-
-
-
+namespace March2023.Tests
+{
+    [TestFixture]
+    public class Program : CommonDriver
+    {
+        
+        [SetUp]
+        public void LoginActions()
+        {
+            driver = new ChromeDriver();
+            Login loginObj = new Login();
+            loginObj.login();
 
 
+            Dashboard dashboardObj = new Dashboard();
+            dashboardObj.goToTMPage();
+        }
 
+        [Test, Order(1)]
+        public void CreateTM_Test()
+        {
+            TMPage createTMObj = new TMPage();
+            createTMObj.Create();
+        }
+        [Test, Order(2)]
+        public void EditTM_Test()
+        {
+            TMPage editTMObj = new TMPage();
+            editTMObj.Edit();
+        }
 
+        [Test, Order(3)]
+        public void DeleteTM_Test()
+        {
+            TMPage deleteTMObj = new TMPage();
+            deleteTMObj.Delete();
+        }
 
+        [TearDown]
+        public void CloseTests()
+        {
 
+        }
+    }
 
-
+}
