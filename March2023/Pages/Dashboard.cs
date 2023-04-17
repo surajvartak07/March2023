@@ -10,7 +10,7 @@ namespace March2023.Pages
 {
     public class Dashboard : CommonDriver
     {
-        public void goToTMPage()
+        public void GoToTMPage()
         {
             //navigate to time and material page
             IWebElement adminMenu = driver.FindElement(By.XPath("/html/body/div[3]/div/div/ul/li[5]/a"));
@@ -19,6 +19,15 @@ namespace March2023.Pages
             IWebElement tmOption = driver.FindElement(By.XPath("/html/body/div[3]/div/div/ul/li[5]/ul/li[3]/a"));
             tmOption.Click();
             Thread.Sleep(3000);
+        }
+
+        public void GotoEmployeePage()
+        {
+            IWebElement adminMenu = driver.FindElement(By.XPath("/html/body/div[3]/div/div/ul/li[5]/a"));
+            adminMenu.Click();
+
+            IWebElement employeeOption = driver.FindElement(By.XPath("/html/body/div[3]/div/div/ul/li[5]/ul/li[2]/a"));
+            employeeOption.Click();
         }
     }
 }

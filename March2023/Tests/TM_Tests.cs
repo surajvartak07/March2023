@@ -13,10 +13,9 @@ using March2023.Utilities;
 namespace March2023.Tests
 {
     [TestFixture]
-    public class Program : CommonDriver
+   // [Parallelizable]
+    public class TM_Tests : CommonDriver
     {
-
-        
         [SetUp]
         public void LoginActions()
         {
@@ -26,7 +25,7 @@ namespace March2023.Tests
 
 
             Dashboard dashboardObj = new Dashboard();
-            dashboardObj.goToTMPage();
+            dashboardObj.GoToTMPage();
         }
 
         [Test, Order(1)]
