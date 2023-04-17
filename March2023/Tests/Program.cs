@@ -15,6 +15,7 @@ namespace March2023.Tests
     [TestFixture]
     public class Program : CommonDriver
     {
+
         
         [SetUp]
         public void LoginActions()
@@ -51,7 +52,7 @@ namespace March2023.Tests
         [TearDown]
         public void CloseTests()
         {
-
+            driver.Quit();
         }
     }
 
