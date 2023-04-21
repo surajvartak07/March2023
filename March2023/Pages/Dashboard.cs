@@ -8,9 +8,9 @@ using System.Threading.Tasks;
 
 namespace March2023.Pages
 {
-    public class Dashboard : CommonDriver
+    public class Dashboard 
     {
-        public void GoToTMPage()
+        public void GoToTMPage(IWebDriver driver)
         {
             //navigate to time and material page
             IWebElement adminMenu = driver.FindElement(By.XPath("/html/body/div[3]/div/div/ul/li[5]/a"));
@@ -21,7 +21,7 @@ namespace March2023.Pages
             Thread.Sleep(3000);
         }
 
-        public void GotoEmployeePage()
+        public void GotoEmployeePage(IWebDriver driver)
         {
             IWebElement adminMenu = driver.FindElement(By.XPath("/html/body/div[3]/div/div/ul/li[5]/a"));
             adminMenu.Click();

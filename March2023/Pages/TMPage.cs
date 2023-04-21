@@ -1,6 +1,7 @@
 ﻿using March2023.Utilities;
 using NUnit.Framework;
 using OpenQA.Selenium;
+using OpenQA.Selenium.Support.UI;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,9 +10,9 @@ using System.Threading.Tasks;
 
 namespace March2023.Pages
 {
-    public class TMPage : CommonDriver
+    public class TMPage
     {
-        public void Create()
+        public void Create(IWebDriver driver)
         {
             //Create new Time entry  
 
@@ -55,25 +56,19 @@ namespace March2023.Pages
             goToLastPage.Click();
             Thread.Sleep(5000);
 
+        }
+
+        public string ValidateNewRecord(IWebDriver driver)
+        {
             //changed tr[4] part in xpath to tr[last()] so that it always finds last entry
             IWebElement latestCreated = driver.FindElement(By.XPath("//*[@id=\"tmsGrid\"]/div[3]/table/tbody/tr[last()]/td[1]"));
-
+            Thread.Sleep(2000);
+            return latestCreated.Text;
             //checking if newly created entry exists
-
-            Assert.That(latestCreated.Text == "TimeTest","Actual code and expected code do not match");
-            //if (latestCreated.Text == "TimeTest")
-            //{
-            //    Console.WriteLine("Created Successfully");
-            //}
-            //else
-            //{
-            //    Console.WriteLine($"Could not create");
-            //}
-
 
         }
 
-        public void Edit()
+        public void Edit(IWebDriver driver, string description = "", string code = "", string price = "")
         {
             //Go to last page because our record is on last page, in createnew we went to last page but this test is seperate so again we have to go to last page
             IWebElement goToLastPage = driver.FindElement(By.XPath("//*[@id=\"tmsGrid\"]/div[4]/a[4]/span"));
@@ -85,45 +80,62 @@ namespace March2023.Pages
             IWebElement editButton = driver.FindElement(By.XPath("//*[@id=\"tmsGrid\"]/div[3]/table/tbody/tr[last()]/td[5]/a[1]"));
             editButton.Click();
 
-            IWebElement editDropdownValue = driver.FindElement(By.XPath("//*[@id=\"TimeMaterialEditForm\"]/div/div[1]/div/span[1]/span/span[1]"));
-            editDropdownValue.Click();
-            Thread.Sleep(2000);
+            //IWebElement editDropdownValue = driver.FindElement(By.XPath("//*[@id=\"TimeMaterialEditForm\"]/div/div[1]/div/span[1]/span/span[1]"));
+            //editDropdownValue.Click();
+            //Thread.Sleep(2000);
 
-            //editing dropdown value from time to material
-            IWebElement materialOption = driver.FindElement(By.XPath("//*[@id=\"TypeCode_listbox\"]/li[1]"));
-            materialOption.Click();
+            ////editing dropdown value from time to material
+            //IWebElement materialOption = driver.FindElement(By.XPath("//*[@id=\"TypeCode_listbox\"]/li[1]"));
+            //materialOption.Click();
 
             IWebElement editCodeBox = driver.FindElement(By.Id("Code"));
             editCodeBox.Clear();
-            editCodeBox.SendKeys("MaterialTestEdited");
+            editCodeBox.SendKeys(code);
 
             IWebElement editDescriptionBox = driver.FindElement(By.Id("Description"));
             editDescriptionBox.Clear();
-            editDescriptionBox.SendKeys("DescriptionTestEdited");
+            editDescriptionBox.SendKeys(description);
+
+            IWebElement overlap = driver.FindElement(By.XPath("//*[@id=\"TimeMaterialEditForm\"]/div/div[4]/div/span[1]/span/input[1]"));
+            overlap.Click();                                   
+               
+            IWebElement editPrice = driver.FindElement(By.Id("Price"));
+            editPrice.Clear();
+            overlap.Click() ;
+            editPrice.SendKeys(price);
+            
+
+            Thread.Sleep(1000);
 
             IWebElement editSaveButton = driver.FindElement(By.Id("SaveButton"));
             editSaveButton.Click();
-            Thread.Sleep(2000);
+            Thread.Sleep(5000);
 
             IWebElement goToLastPageAgain = driver.FindElement(By.XPath("//*[@id=\"tmsGrid\"]/div[4]/a[4]/span"));
             goToLastPageAgain.Click();
             Thread.Sleep(5000);
 
-            //testing that edited record exists on the last row
-            IWebElement editedRecord = driver.FindElement(By.XPath("//*[@id=\"tmsGrid\"]/div[3]/table/tbody/tr[last()]/td[1]"));
-
-            Assert.That(editedRecord.Text == "MaterialTestEdited", "Could not edit");
-            //if (editedRecord.Text == "MaterialTestEdited")
-            //{
-            //    Console.WriteLine("Edited Successfully");
-            //}
-            //else
-            //{
-            //    Console.WriteLine("Could not edit");
-            //}
         }
 
-        public void Delete()
+        public string ValidateEditedDescription(IWebDriver driver)
+        {
+            IWebElement editedDescription = driver.FindElement(By.XPath("//*[@id=\"tmsGrid\"]/div[3]/table/tbody/tr[last()]/td[3]"));
+            return editedDescription.Text;
+        }
+
+        public string validateEditedCode(IWebDriver driver)
+        {
+            IWebElement editedCode = driver.FindElement(By.XPath("//*[@id=\"tmsGrid\"]/div[3]/table/tbody/tr[last()]/td[1]"));
+            return editedCode.Text;
+        }
+
+        public string validateEditedPrice(IWebDriver driver)
+        {
+            IWebElement editedPrice = driver.FindElement(By.XPath("//*[@id=\"tmsGrid\"]/div[3]/table/tbody/tr[last()]/td[4]"));
+            return editedPrice.Text;
+        }
+
+        public void Delete(IWebDriver driver)
         {
             Thread.Sleep(5000);
             //Go to last page because our record is on last page, in createnew we went to last page but this test is seperate so again we have to go to last page
@@ -139,18 +151,12 @@ namespace March2023.Pages
             //clicking OK on popup window
             driver.SwitchTo().Alert().Accept();
             Thread.Sleep(8000);
+        }
 
-            //last record should not be 'MaterialTestEdited' because we deleted that record 
-            IWebElement lastRecord = driver.FindElement(By.XPath("//*[@id=\"tmsGrid\"]/div[3]/table/tbody/tr[last()]/td[1]"));
-            Assert.That(lastRecord.Text != "MaterialTestEdited", "Could not delete");
-            //if (lastRecord.Text != "MaterialTestEdited")
-            //{
-            //    Console.WriteLine("Deleted successfully");
-            //}
-            //else
-            //{
-            //    Console.WriteLine("Could not delete");
-            //}
+        public string ValidateRecordDeletion(IWebDriver driver)
+        {
+            IWebElement lastRecord = driver.FindElement(By.XPath("//*[@id=\"tmsGrid\"]/div[3]/table/tbody/tr[last()]/td[3]"));
+            return lastRecord.Text;
         }
     }
 }

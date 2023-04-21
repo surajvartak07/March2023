@@ -13,39 +13,47 @@ using March2023.Utilities;
 namespace March2023.Tests
 {
     [TestFixture]
-   // [Parallelizable]
-    public class TM_Tests : CommonDriver
+   [Parallelizable]
+    public class TM_Tests
     {
+        private IWebDriver driver;
+
         [SetUp]
         public void LoginActions()
         {
             driver = new ChromeDriver();
             Login loginObj = new Login();
-            loginObj.login();
+            loginObj.login(driver);
 
 
             Dashboard dashboardObj = new Dashboard();
-            dashboardObj.GoToTMPage();
+            dashboardObj.GoToTMPage(driver);
         }
 
         [Test, Order(1)]
         public void CreateTM_Test()
         {
-            TMPage createTMObj = new TMPage();
-            createTMObj.Create();
+            TMPage tMObj = new TMPage();
+            tMObj.Create(driver);
+
+          string latestCreated = tMObj.ValidateNewRecord(driver);
+            Assert.That(latestCreated == "TimeTest", "Actual code and expected code do not match");
+
+
         }
         [Test, Order(2)]
         public void EditTM_Test()
         {
-            TMPage editTMObj = new TMPage();
-            editTMObj.Edit();
+            TMPage tMObj = new TMPage();
+            tMObj.Edit(driver);
         }
 
         [Test, Order(3)]
         public void DeleteTM_Test()
         {
-            TMPage deleteTMObj = new TMPage();
-            deleteTMObj.Delete();
+            TMPage tMObj = new TMPage();
+            tMObj.Delete(driver);
+            tMObj.ValidateRecordDeletion(driver);
         }
 
         [TearDown]

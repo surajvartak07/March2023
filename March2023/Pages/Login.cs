@@ -9,9 +9,9 @@ using System.Threading.Tasks;
 
 namespace March2023.Pages
 {
-    public class Login : CommonDriver
-    {
-        public void login()
+    public class Login
+    { 
+        public void login(IWebDriver driver) 
         {
             driver.Navigate().GoToUrl("http://horse.industryconnect.io/Account/Login?ReturnUrl=%2fTimeMaterial");
             driver.Manage().Window.Maximize();
